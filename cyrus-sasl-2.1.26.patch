@@ -1,6 +1,6 @@
 diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake cyrus-sasl-2.1.26/cmake/modules/FindWcecompat.cmake
---- cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake	1970-01-01 01:00:00.000000000 +0100
-+++ cyrus-sasl-2.1.26/cmake/modules/FindWcecompat.cmake	2013-02-16 12:26:49.054683900 +0100
+--- a/src/cmake/modules/FindWcecompat.cmake	1970-01-01 01:00:00.000000000 +0100
++++ b/src/cmake/modules/FindWcecompat.cmake	2013-02-16 12:26:49.054683900 +0100
 @@ -0,0 +1,33 @@
 +# Try to find Wcecompat functionality
 +# Once done this will define
@@ -35,9 +35,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake cyrus
 +find_package_handle_standard_args(Wcecompat  DEFAULT_MSG  WCECOMPAT_LIBRARIES  WCECOMPAT_LIB_FOUND)
 +
 +mark_as_advanced(WCECOMPAT_INCLUDE_DIR  WCECOMPAT_LIBRARIES  WCECOMPAT_CONST  WCECOMPAT_LIB_FOUND)
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/CMakeLists.txt cyrus-sasl-2.1.26/CMakeLists.txt
---- cyrus-sasl-2.1.26.orig/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
-+++ cyrus-sasl-2.1.26/CMakeLists.txt	2013-02-16 12:26:49.060681600 +0100
+diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
+--- a/src/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
++++ b/src/CMakeLists.txt	2013-02-16 12:26:49.060681600 +0100
 @@ -0,0 +1,276 @@
 +project(cyrus-sasl)
 +cmake_minimum_required(VERSION 2.6.2)
@@ -315,9 +315,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/CMakeLists.txt cyrus-sasl-2.1.26/CMakeL
 +add_executable(sasl2_pluginviewer utils/pluginviewer.c)
 +target_link_libraries(sasl2_pluginviewer sasl2 ${additional_link_libs})
 +install(TARGETS sasl2_pluginviewer DESTINATION bin)
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/config.h.cmake cyrus-sasl-2.1.26/config.h.cmake
---- cyrus-sasl-2.1.26.orig/config.h.cmake	1970-01-01 01:00:00.000000000 +0100
-+++ cyrus-sasl-2.1.26/config.h.cmake	2013-02-16 12:26:49.064681700 +0100
+diff -Nru -x '*~' a/src/config.h.cmake b/src/config.h.cmake
+--- a/src/config.h.cmake	1970-01-01 01:00:00.000000000 +0100
++++ b/src/config.h.cmake	2013-02-16 12:26:49.064681700 +0100
 @@ -0,0 +1,212 @@
 +#ifndef CONFIG_H
 +#define CONFIG_H
@@ -531,9 +531,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/config.h.cmake cyrus-sasl-2.1.26/config
 +# define HIER_DELIMITER @HIER_DELIMITER@
 +#endif
 +#endif
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/gai.h cyrus-sasl-2.1.26/include/gai.h
---- cyrus-sasl-2.1.26.orig/include/gai.h	2012-01-28 00:31:36.000000000 +0100
-+++ cyrus-sasl-2.1.26/include/gai.h	2013-02-16 12:26:49.068682300 +0100
+diff -Nru -x '*~' a/src/include/gai.h b/src/include/gai.h
+--- a/src/include/gai.h	2012-01-28 00:31:36.000000000 +0100
++++ b/src/include/gai.h	2013-02-16 12:26:49.068682300 +0100
 @@ -54,6 +54,8 @@
  #ifndef _GAI_H_
  #define _GAI_H_
@@ -578,9 +578,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/gai.h cyrus-sasl-2.1.26/include
  #endif
  
  #ifdef __cplusplus
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/prop.h cyrus-sasl-2.1.26/include/prop.h
---- cyrus-sasl-2.1.26.orig/include/prop.h	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/include/prop.h	2013-02-16 12:26:49.072682800 +0100
+diff -Nru -x '*~' a/src/include/prop.h b/src/include/prop.h
+--- a/src/include/prop.h	2012-10-12 16:05:48.000000000 +0200
++++ b/src/include/prop.h	2013-02-16 12:26:49.072682800 +0100
 @@ -33,17 +33,21 @@
  /* Under Unix, life is simpler: we just need to mark library functions
   * as extern.  (Technically, we don't even have to do that.) */
@@ -609,9 +609,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/prop.h cyrus-sasl-2.1.26/includ
  # ifdef LIBSASL_EXPORTS
  #  define LIBSASL_VAR  extern __declspec(dllexport)
  # else /* LIBSASL_EXPORTS */
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/prop.h.cmake cyrus-sasl-2.1.26/include/prop.h.cmake
---- cyrus-sasl-2.1.26.orig/include/prop.h.cmake	1970-01-01 01:00:00.000000000 +0100
-+++ cyrus-sasl-2.1.26/include/prop.h.cmake	2013-02-16 12:26:49.077683700 +0100
+diff -Nru -x '*~' a/src/include/prop.h.cmake b/src/include/prop.h.cmake
+--- a/src/include/prop.h.cmake	1970-01-01 01:00:00.000000000 +0100
++++ b/src/include/prop.h.cmake	2013-02-16 12:26:49.077683700 +0100
 @@ -0,0 +1,193 @@
 +/* prop.h -- property request/response management routines
 + *
@@ -806,9 +806,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/prop.h.cmake cyrus-sasl-2.1.26/
 +#endif
 +
 +#endif /* PROP_H */
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/sasl.h cyrus-sasl-2.1.26/include/sasl.h
---- cyrus-sasl-2.1.26.orig/include/sasl.h	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/include/sasl.h	2013-02-18 11:00:29.208627000 +0100
+diff -Nru -x '*~' a/src/include/sasl.h b/src/include/sasl.h
+--- a/src/include/sasl.h	2012-10-12 16:05:48.000000000 +0200
++++ b/src/include/sasl.h	2013-02-18 11:00:29.208627000 +0100
 @@ -130,6 +130,7 @@
  #define SASL_VERSION_FULL ((SASL_VERSION_MAJOR << 16) |\
        (SASL_VERSION_MINOR << 8) | SASL_VERSION_STEP)
@@ -817,9 +817,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/include/sasl.h cyrus-sasl-2.1.26/includ
  #include "prop.h"
  
  /*************
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/auxprop.c cyrus-sasl-2.1.26/lib/auxprop.c
---- cyrus-sasl-2.1.26.orig/lib/auxprop.c	2012-01-28 00:31:36.000000000 +0100
-+++ cyrus-sasl-2.1.26/lib/auxprop.c	2013-02-16 12:26:49.083684300 +0100
+diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
+--- a/src/lib/auxprop.c
++++ b/src/lib/auxprop.c
 @@ -905,7 +905,7 @@
  			  unsigned flags,
  			  const char *user, unsigned ulen) 
@@ -861,9 +861,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/auxprop.c cyrus-sasl-2.1.26/lib/aux
  	if(ret != SASL_OK) plist = NULL;
      }
  
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/canonusr.c cyrus-sasl-2.1.26/lib/canonusr.c
---- cyrus-sasl-2.1.26.orig/lib/canonusr.c	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/lib/canonusr.c	2013-02-16 12:26:49.089685400 +0100
+diff -Nru -x '*~' a/src/lib/canonusr.c b/src/lib/canonusr.c
+--- a/src/lib/canonusr.c	2012-10-12 16:05:48.000000000 +0200
++++ b/src/lib/canonusr.c	2013-02-16 12:26:49.089685400 +0100
 @@ -74,7 +74,7 @@
      sasl_server_conn_t *sconn = NULL;
      sasl_client_conn_t *cconn = NULL;
@@ -887,9 +887,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/canonusr.c cyrus-sasl-2.1.26/lib/ca
      }
  
      if (!plugin_name) {
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/checkpw.c cyrus-sasl-2.1.26/lib/checkpw.c
---- cyrus-sasl-2.1.26.orig/lib/checkpw.c	2012-01-28 00:31:36.000000000 +0100
-+++ cyrus-sasl-2.1.26/lib/checkpw.c	2013-02-16 12:26:49.094689200 +0100
+diff -Nru -x '*~' a/src/lib/checkpw.c b/src/lib/checkpw.c
+--- a/src/lib/checkpw.c	2012-01-28 00:31:36.000000000 +0100
++++ b/src/lib/checkpw.c	2013-02-16 12:26:49.094689200 +0100
 @@ -649,7 +649,7 @@
      char *query_end = query;
      int s;
@@ -929,9 +929,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/checkpw.c cyrus-sasl-2.1.26/lib/che
      }
      if (!p) {
  	/*
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/common.c cyrus-sasl-2.1.26/lib/common.c
---- cyrus-sasl-2.1.26.orig/lib/common.c	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/lib/common.c	2013-02-16 12:26:49.101686700 +0100
+diff -Nru -x '*~' a/src/lib/common.c b/src/lib/common.c
+--- a/src/lib/common.c	2012-10-12 16:05:48.000000000 +0200
++++ b/src/lib/common.c	2013-02-16 12:26:49.101686700 +0100
 @@ -902,7 +902,7 @@
  int sasl_getprop(sasl_conn_t *conn, int propnum, const void **pvalue)
  {
@@ -988,9 +988,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/common.c cyrus-sasl-2.1.26/lib/comm
      case REG_MULTI_SZ:
          tmp = ValueData;
  
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/dlopen.c cyrus-sasl-2.1.26/lib/dlopen.c
---- cyrus-sasl-2.1.26.orig/lib/dlopen.c	2012-01-28 00:31:36.000000000 +0100
-+++ cyrus-sasl-2.1.26/lib/dlopen.c	2013-02-16 12:26:49.106688000 +0100
+diff -Nru -x '*~' a/src/lib/dlopen.c b/src/lib/dlopen.c
+--- a/src/lib/dlopen.c	2012-01-28 00:31:36.000000000 +0100
++++ b/src/lib/dlopen.c	2013-02-16 12:26:49.106688000 +0100
 @@ -56,7 +56,7 @@
  #include <sasl.h>
  #include "saslint.h"
@@ -1027,9 +1027,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/dlopen.c cyrus-sasl-2.1.26/lib/dlop
  
  /* only do the following if:
   * 
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/saslutil.c cyrus-sasl-2.1.26/lib/saslutil.c
---- cyrus-sasl-2.1.26.orig/lib/saslutil.c	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/lib/saslutil.c	2013-02-16 12:26:49.112688100 +0100
+diff -Nru -x '*~' a/src/lib/saslutil.c b/src/lib/saslutil.c
+--- a/src/lib/saslutil.c	2012-10-12 16:05:48.000000000 +0200
++++ b/src/lib/saslutil.c	2013-02-16 12:26:49.112688100 +0100
 @@ -607,7 +607,7 @@
      return (0);
  }
@@ -1198,9 +1198,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/saslutil.c cyrus-sasl-2.1.26/lib/sa
  	return(pbuf);
  }
  
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/server.c cyrus-sasl-2.1.26/lib/server.c
---- cyrus-sasl-2.1.26.orig/lib/server.c	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/lib/server.c	2013-02-16 12:26:49.120689300 +0100
+diff -Nru -x '*~' a/src/lib/server.c b/src/lib/server.c
+--- a/src/lib/server.c	2012-10-12 16:05:48.000000000 +0200
++++ b/src/lib/server.c	2013-02-16 12:26:49.120689300 +0100
 @@ -820,7 +820,7 @@
      const sasl_callback_t *vf;
      const char *pluginfile = NULL;
@@ -1311,9 +1311,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/server.c cyrus-sasl-2.1.26/lib/serv
      }
  
      if(!mlist) mlist = DEFAULT_CHECKPASS_MECH;
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/windlopen.c cyrus-sasl-2.1.26/lib/windlopen.c
---- cyrus-sasl-2.1.26.orig/lib/windlopen.c	2012-01-28 00:31:36.000000000 +0100
-+++ cyrus-sasl-2.1.26/lib/windlopen.c	2013-02-16 12:26:49.125689600 +0100
+diff -Nru -x '*~' a/src/lib/windlopen.c b/src/lib/windlopen.c
+--- a/src/lib/windlopen.c	2012-01-28 00:31:36.000000000 +0100
++++ b/src/lib/windlopen.c	2013-02-16 12:26:49.125689600 +0100
 @@ -50,6 +50,11 @@
  #include <sasl.h>
  #include "saslint.h"
@@ -1437,9 +1437,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/lib/windlopen.c cyrus-sasl-2.1.26/lib/w
  
      return SASL_OK;
  }
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/anonymous_init.c cyrus-sasl-2.1.26/plugins/anonymous_init.c
---- cyrus-sasl-2.1.26.orig/plugins/anonymous_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ cyrus-sasl-2.1.26/plugins/anonymous_init.c	2013-02-16 12:26:49.129690200 +0100
+diff -Nru -x '*~' a/src/plugins/anonymous_init.c b/src/plugins/anonymous_init.c
+--- a/src/plugins/anonymous_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/src/plugins/anonymous_init.c	2013-02-16 12:26:49.129690200 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_anonymous_plugin_decl.h>
  #endif
@@ -1459,9 +1459,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/anonymous_init.c cyrus-sasl-2.1
  SASL_SERVER_PLUG_INIT( anonymous )
 -
 +#endif
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/crammd5_init.c cyrus-sasl-2.1.26/plugins/crammd5_init.c
---- cyrus-sasl-2.1.26.orig/plugins/crammd5_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ cyrus-sasl-2.1.26/plugins/crammd5_init.c	2013-02-16 12:26:49.133690800 +0100
+diff -Nru -x '*~' a/src/plugins/crammd5_init.c b/src/plugins/crammd5_init.c
+--- a/src/plugins/crammd5_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/src/plugins/crammd5_init.c	2013-02-16 12:26:49.133690800 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_crammd5_plugin_decl.h>
  #endif
@@ -1481,9 +1481,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/crammd5_init.c cyrus-sasl-2.1.2
  SASL_SERVER_PLUG_INIT( crammd5 )
 -
 +#endif
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/digestmd5_init.c cyrus-sasl-2.1.26/plugins/digestmd5_init.c
---- cyrus-sasl-2.1.26.orig/plugins/digestmd5_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ cyrus-sasl-2.1.26/plugins/digestmd5_init.c	2013-02-16 12:26:49.138693100 +0100
+diff -Nru -x '*~' a/src/plugins/digestmd5_init.c b/src/plugins/digestmd5_init.c
+--- a/src/plugins/digestmd5_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/src/plugins/digestmd5_init.c	2013-02-16 12:26:49.138693100 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_digestmd5_plugin_decl.h>
  #endif
@@ -1503,9 +1503,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/digestmd5_init.c cyrus-sasl-2.1
  SASL_SERVER_PLUG_INIT( digestmd5 )
 -
 +#endif
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/login_init.c cyrus-sasl-2.1.26/plugins/login_init.c
---- cyrus-sasl-2.1.26.orig/plugins/login_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ cyrus-sasl-2.1.26/plugins/login_init.c	2013-02-16 12:26:49.143694000 +0100
+diff -Nru -x '*~' a/src/plugins/login_init.c b/src/plugins/login_init.c
+--- a/src/plugins/login_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/src/plugins/login_init.c	2013-02-16 12:26:49.143694000 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_login_plugin_decl.h>
  #endif
@@ -1525,9 +1525,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/login_init.c cyrus-sasl-2.1.26/
  SASL_SERVER_PLUG_INIT( login )
 -
 +#endif
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/plain_init.c cyrus-sasl-2.1.26/plugins/plain_init.c
---- cyrus-sasl-2.1.26.orig/plugins/plain_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ cyrus-sasl-2.1.26/plugins/plain_init.c	2013-02-16 12:26:49.146693300 +0100
+diff -Nru -x '*~' a/src/plugins/plain_init.c b/src/plugins/plain_init.c
+--- a/src/plugins/plain_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/src/plugins/plain_init.c	2013-02-16 12:26:49.146693300 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_plain_plugin_decl.h>
  #endif
@@ -1547,9 +1547,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/plain_init.c cyrus-sasl-2.1.26/
  SASL_SERVER_PLUG_INIT( plain )
 -
 +#endif
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/plugin_common.c cyrus-sasl-2.1.26/plugins/plugin_common.c
---- cyrus-sasl-2.1.26.orig/plugins/plugin_common.c	2012-10-12 16:05:48.000000000 +0200
-+++ cyrus-sasl-2.1.26/plugins/plugin_common.c	2013-02-16 12:26:49.151692700 +0100
+diff -Nru -x '*~' a/src/plugins/plugin_common.c b/src/plugins/plugin_common.c
+--- a/src/plugins/plugin_common.c	2012-10-12 16:05:48.000000000 +0200
++++ b/src/plugins/plugin_common.c	2013-02-16 12:26:49.151692700 +0100
 @@ -819,7 +819,7 @@
  
  void _plug_snprintf_os_info (char * osbuf, int osbuf_len)
@@ -1605,9 +1605,9 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/plugins/plugin_common.c cyrus-sasl-2.1.
  #else /* !WIN32 */
      struct utsname os;
  
-diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/utils/pluginviewer.c cyrus-sasl-2.1.26/utils/pluginviewer.c
---- cyrus-sasl-2.1.26.orig/utils/pluginviewer.c	2012-01-28 00:31:36.000000000 +0100
-+++ cyrus-sasl-2.1.26/utils/pluginviewer.c	2013-02-16 12:26:49.157694300 +0100
+diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
+--- a/src/utils/pluginviewer.c	2012-01-28 00:31:36.000000000 +0100
++++ b/src/utils/pluginviewer.c	2013-02-16 12:26:49.157694300 +0100
 @@ -49,9 +49,16 @@
  #include <stdlib.h>
  #ifdef WIN32
