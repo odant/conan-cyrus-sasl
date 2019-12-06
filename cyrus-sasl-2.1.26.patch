@@ -820,7 +820,7 @@ diff -Nru -x '*~' a/src/include/sasl.h b/src/include/sasl.h
 diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
 --- a/src/lib/auxprop.c
 +++ b/src/lib/auxprop.c
-@@ -905,7 +905,7 @@
+@@ -906,7 +906,7 @@ int _sasl_auxprop_lookup(sasl_server_params_t *sparams,
  			  unsigned flags,
  			  const char *user, unsigned ulen) 
  {
@@ -829,7 +829,7 @@ diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
      int ret, found = 0;
      void *context;
      const char *plist = NULL;
-@@ -914,9 +914,9 @@
+@@ -915,9 +915,9 @@ int _sasl_auxprop_lookup(sasl_server_params_t *sparams,
  
      if(_sasl_getcallback(sparams->utils->conn,
  			 SASL_CB_GETOPT,
@@ -841,7 +841,7 @@ diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
  	if(ret != SASL_OK) plist = NULL;
      }
  
-@@ -982,7 +982,7 @@
+@@ -987,7 +987,7 @@ int _sasl_auxprop_lookup(sasl_server_params_t *sparams,
  int sasl_auxprop_store(sasl_conn_t *conn,
  		       struct propctx *ctx, const char *user)
  {
@@ -850,7 +850,7 @@ diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
      int ret;
      void *context;
      const char *plist = NULL;
-@@ -1001,8 +1001,8 @@
+@@ -1006,8 +1006,8 @@ int sasl_auxprop_store(sasl_conn_t *conn,
      }
      
      /* Pickup getopt callback from the connection, if conn is not NULL */
@@ -1000,7 +1000,7 @@ diff -Nru -x '*~' a/src/lib/dlopen.c b/src/lib/dlopen.c
  #include <saslplug.h>
  #include "staticopen.h"
  #endif
-@@ -407,7 +407,7 @@
+@@ -308,7 +308,7 @@
      DIR *dp;
      struct dirent *dir;
  #endif
@@ -1009,7 +1009,7 @@ diff -Nru -x '*~' a/src/lib/dlopen.c b/src/lib/dlopen.c
      add_plugin_t *add_plugin;
      _sasl_plug_type type;
      _sasl_plug_rec *p;
-@@ -422,7 +422,7 @@
+@@ -323,7 +323,7 @@
  	|| ! verifyfile_cb->proc)
  	return SASL_BADPARAM;
  
@@ -1018,7 +1018,7 @@ diff -Nru -x '*~' a/src/lib/dlopen.c b/src/lib/dlopen.c
      /* do all the static plugins first */
  
      for(cur_ep = entrypoints; cur_ep->entryname; cur_ep++) {
-@@ -449,7 +449,7 @@
+@@ -350,7 +350,7 @@
  	    	result = add_plugin(p->name, p->plug);
  	}
      }
