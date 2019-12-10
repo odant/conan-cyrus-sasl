@@ -43,7 +43,7 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +cmake_minimum_required(VERSION 2.6.2)
 +set(PACKAGE "cyrus-sasl")
 +set(VERSION "2.1.26")
-+set(PLUGINDESTINATION lib/sasl2)
++set(PLUGINDESTINATION bin/sasl2)
 +set(PLUGINDIR ${CMAKE_INSTALL_PREFIX}/${PLUGINDESTINATION})
 +set(CONFIGDIR ${CMAKE_INSTALL_PREFIX}/${PLUGINDESTINATION})
 +
