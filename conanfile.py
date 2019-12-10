@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake, tools
+from conans import ConanFile, CMake, AutoToolsBuildEnvironment, tools
 from conans.errors import ConanException
 import os, glob, shutil
 
@@ -52,7 +52,7 @@ class CyrusSaslConan(ConanFile):
         if self.settings.os == "Windows":
             tools.patch(patch_file="cyrus-sasl-2.1.26.patch")
 
-    def build(self):
+    def build_cmake(self):
         build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
         generator = "Ninja" if self.options.ninja == True else None
         cmake = CMake(self, build_type=build_type, generator=generator)
@@ -65,6 +65,17 @@ class CyrusSaslConan(ConanFile):
         cmake.configure(source_folder=source_folder)
         cmake.build()
         cmake.install()
+
+    def build_autotools(self):
+        autotools = AutoToolsBuildEnvironment(self)
+        autotools.configure()
+        autotools.make()
+        
+    def build(self):
+        if self.settings.os == "Windows":
+            self.build_cmake()
+        else:
+            self.build_autotools()
 
     def package_id(self):
         self.info.options.ninja = "any"
