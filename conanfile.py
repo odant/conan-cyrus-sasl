@@ -80,18 +80,24 @@ class CyrusSaslConan(ConanFile):
     def package_id(self):
         self.info.options.ninja = "any"
 
+    def sign_binary(self, path):
+        import windows_signtool
+        for fpath in glob.glob(path):
+            fpath = fpath.replace("\\", "/")
+            for alg in ["sha1", "sha256"]:
+                is_timestamp = True if self.settings.build_type == "Release" else False
+                cmd = windows_signtool.get_sign_command(fpath, digest_algorithm=alg, timestamp=is_timestamp)
+                self.output.info("Sign %s" % fpath)
+                self.run(cmd)
+        
     def package(self):
         # Sign DLL
         if get_safe(self.options, "dll_sign"):
-            import windows_signtool
-            pattern = os.path.join(self.package_folder, "bin", "*.dll")
-            for fpath in glob.glob(pattern):
-                fpath = fpath.replace("\\", "/")
-                for alg in ["sha1", "sha256"]:
-                    is_timestamp = True if self.settings.build_type == "Release" else False
-                    cmd = windows_signtool.get_sign_command(fpath, digest_algorithm=alg, timestamp=is_timestamp)
-                    self.output.info("Sign %s" % fpath)
-                    self.run(cmd)
+            bin_path = os.path.join(self.package_folder, "bin")
+            lib_binary = os.path.join(bin_path, "*.dll")
+            self.sign_binary(lib_binary)
+            plugin_binaries = os.path.join(bin_path, "sasl2", "*.dll")
+            self.sign_binary(plugin_binaries)
 
     def package_info(self):
         self.cpp_info.libs = tools.collect_libs(self)
