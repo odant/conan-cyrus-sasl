@@ -25,7 +25,7 @@ class CyrusSaslConan(ConanFile):
     }
     default_options = "dll_sign=True", "ninja=True", "shared=True", "plugins_shared=True"
     generators = "cmake"
-    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch"
+    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch", "Findcyrus-sasl.cmake"
     no_copy_source = True
     build_policy = "missing"
 
@@ -91,6 +91,7 @@ class CyrusSaslConan(ConanFile):
                 self.run(cmd)
         
     def package(self):
+        self.copy("Findcyrus-sasl.cmake", dst=".", src=".", keep_path=False)
         # Sign DLL
         if get_safe(self.options, "dll_sign"):
             bin_path = os.path.join(self.package_folder, "bin")
