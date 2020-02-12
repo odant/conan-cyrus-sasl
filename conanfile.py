@@ -92,6 +92,7 @@ class CyrusSaslConan(ConanFile):
         
     def package(self):
         self.copy("Findcyrus-sasl.cmake", dst=".", src=".", keep_path=False)
+        self.copy("config.h", dst="include/sasl", src=".", keep_path=False)
         # Sign DLL
         if get_safe(self.options, "dll_sign"):
             bin_path = os.path.join(self.package_folder, "bin")
