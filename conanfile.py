@@ -49,8 +49,7 @@ class CyrusSaslConan(ConanFile):
     def source(self):
         tools.patch(patch_file="cyrus-sasl-2.1.26-fixes-3.patch")
         tools.patch(patch_file="cyrus-sasl-2.1.26-openssl-1.1.0-1.patch")
-        if self.settings.os == "Windows":
-            tools.patch(patch_file="cyrus-sasl-2.1.26.patch")
+        tools.patch(patch_file="cyrus-sasl-2.1.26.patch")
 
     def build_cmake(self):
         build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
@@ -72,10 +71,7 @@ class CyrusSaslConan(ConanFile):
         autotools.make()
         
     def build(self):
-        if self.settings.os == "Windows":
-            self.build_cmake()
-        else:
-            self.build_autotools()
+        self.build_cmake()
 
     def package_id(self):
         self.info.options.ninja = "any"
