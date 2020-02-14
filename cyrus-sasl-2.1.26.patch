@@ -38,7 +38,7 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake cyrus
 diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 --- a/src/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
 +++ b/src/CMakeLists.txt	2013-02-16 12:26:49.060681600 +0100
-@@ -0,0 +1,299 @@
+@@ -0,0 +1,306 @@
 +project(cyrus-sasl)
 +cmake_minimum_required(VERSION 2.6.2)
 +set(PACKAGE "cyrus-sasl")
@@ -131,16 +131,17 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +
 +if(OpenSSL_FOUND)
 +  set(HAVE_OPENSSL 1)
++  set(additional_link_libs OpenSSL::Crypto OpenSSL::SSL)
 +endif(OpenSSL_FOUND)
 +
 +configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config.h)
 +
 +if(WIN32 AND NOT WINCE)
-+set(additional_link_libs ws2_32 OpenSSL::Crypto OpenSSL::SSL)
++  set(additional_link_libs ${additional_link_libs} ws2_32)
 +endif(WIN32 AND NOT WINCE)
 +
 +if(WINCE)
-+set(additional_link_libs ws2 ${WCECOMPAT_LIBRARIES})
++  set(additional_link_libs ${additional_link_libs} ws2 ${WCECOMPAT_LIBRARIES})
 +endif(WINCE)
 +
 +set(plugin_SRCS
@@ -198,13 +199,17 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +      plugins/digestmd5.c
 +      plugins/digestmd5_init.c
 +    )
-+    #
-+    # NTLM
-+    #
-+    set(ntlm_SRCS
-+      plugins/ntlm.c
-+      plugins/ntlm_init.c
-+    )
++
++    set(ntlm_SRCS)
++    if(HAVE_OPENSSL)
++        #
++        # NTLM
++        #
++        set(ntlm_SRCS
++          plugins/ntlm.c
++          plugins/ntlm_init.c
++        )
++    endif(HAVE_OPENSSL)
 +    set(plugin_SRCS ${plugin_SRCS} ${anonymous_SRCS} ${login_SRCS} ${plain_SRCS} ${crammd5_SRCS} ${digestmd5_SRCS} ${ntlm_SRCS})
 +endif(STATIC_PLUGIN)
 +
@@ -320,16 +325,18 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +    target_link_libraries(saslDIGESTMD5 sasl2 ${additional_link_libs})
 +    install(TARGETS saslDIGESTMD5 DESTINATION ${PLUGINDESTINATION})
 +
-+    #
-+    # NTLM
-+    #
-+    set(ntlm_SRCS
-+      plugins/ntlm.c
-+      plugins/ntlm_init.c
-+    )
-+    add_library(saslNTLM MODULE ${ntlm_SRCS} ${plugin_SRCS})
-+    target_link_libraries(saslNTLM sasl2 ${additional_link_libs})
-+    install(TARGETS saslNTLM DESTINATION ${PLUGINDESTINATION})
++    if(HAVE_OPENSSL)
++        #
++        # NTLM
++        #
++        set(ntlm_SRCS
++          plugins/ntlm.c
++          plugins/ntlm_init.c
++        )
++        add_library(saslNTLM MODULE ${ntlm_SRCS} ${plugin_SRCS})
++        target_link_libraries(saslNTLM sasl2 ${additional_link_libs})
++        install(TARGETS saslNTLM DESTINATION ${PLUGINDESTINATION})
++    endif(HAVE_OPENSSL)
 +endif(NOT STATIC_PLUGIN)
 +
 +#
