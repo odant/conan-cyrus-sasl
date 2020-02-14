@@ -25,10 +25,12 @@ class CyrusSaslConan(ConanFile):
     }
     default_options = "dll_sign=True", "ninja=True", "shared=True", "plugins_shared=True"
     generators = "cmake"
-    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch", "Findcyrus-sasl.cmake"
+    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch", "Findcyrus-sasl.cmake", "CMakeLists.txt"
     no_copy_source = True
     build_policy = "missing"
-
+    # define openssl version
+    _openssl_version = "1.1.0l+2"
+    
     def configure(self):
         if self.settings.compiler.get_safe("libcxx") == "libstdc++":
             raise Exception("This package is only compatible with libstdc++11")
@@ -46,6 +48,9 @@ class CyrusSaslConan(ConanFile):
         if get_safe(self.options, "dll_sign"):
             self.build_requires("windows_signtool/[>=1.1]@%s/stable" % self.user)
 
+    def requirements(self):
+        self.requires("openssl/%s@%s/stable" % (self._openssl_version, self.user))
+        
     def source(self):
         tools.patch(patch_file="cyrus-sasl-2.1.26-fixes-3.patch")
         tools.patch(patch_file="cyrus-sasl-2.1.26-openssl-1.1.0-1.patch")
@@ -60,8 +65,7 @@ class CyrusSaslConan(ConanFile):
             cmake.definitions["STATIC_LIBRARY:BOOL"] = "OFF"
         if self.options.plugins_shared:
             cmake.definitions["STATIC_PLUGIN:BOOL"] = "OFF"
-        source_folder = "./src"
-        cmake.configure(source_folder=source_folder)
+        cmake.configure()
         cmake.build()
         cmake.install()
 
@@ -88,7 +92,7 @@ class CyrusSaslConan(ConanFile):
         
     def package(self):
         self.copy("Findcyrus-sasl.cmake", dst=".", src=".", keep_path=False)
-        self.copy("config.h", dst="include/sasl", src=".", keep_path=False)
+        self.copy("config.h", dst="include/sasl", src="./src", keep_path=False)
         # Sign DLL
         if get_safe(self.options, "dll_sign"):
             bin_path = os.path.join(self.package_folder, "bin")
