@@ -38,7 +38,7 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake cyrus
 diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 --- a/src/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
 +++ b/src/CMakeLists.txt	2013-02-16 12:26:49.060681600 +0100
-@@ -0,0 +1,326 @@
+@@ -0,0 +1,346 @@
 +project(cyrus-sasl)
 +cmake_minimum_required(VERSION 2.6.2)
 +set(PACKAGE "cyrus-sasl")
@@ -202,6 +202,7 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +
 +    set(ntlm_SRCS)
 +    set(otp_SRCS)
++    set(scram_SRCS)
 +    if(HAVE_OPENSSL)
 +        #
 +        # NTLM
@@ -218,8 +219,16 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +          plugins/otp.c
 +          plugins/otp_init.c
 +        )
++
++        #
++        # SCRAM-SHA-1
++        #
++        set(scram_SRCS
++          plugins/scram.c
++          plugins/scram_init.c
++        )
 +    endif(HAVE_OPENSSL)
-+    set(plugin_SRCS ${plugin_SRCS} ${anonymous_SRCS} ${login_SRCS} ${plain_SRCS} ${crammd5_SRCS} ${digestmd5_SRCS} ${ntlm_SRCS} ${otp_SRCS})
++    set(plugin_SRCS ${plugin_SRCS} ${anonymous_SRCS} ${login_SRCS} ${plain_SRCS} ${crammd5_SRCS} ${digestmd5_SRCS} ${ntlm_SRCS} ${otp_SRCS} ${scram_SRCS})
 +endif(STATIC_PLUGIN)
 +
 +set(sasl_SRCS
@@ -356,6 +365,17 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +        add_library(saslOTP MODULE ${otp_SRCS} ${plugin_SRCS})
 +        target_link_libraries(saslOTP sasl2 ${additional_link_libs})
 +        install(TARGETS saslOTP DESTINATION ${PLUGINDESTINATION})
++
++        #
++        # SCRAM-SHA-1
++        #
++        set(scram_SRCS
++          plugins/scram.c
++          plugins/scram_init.c
++        )
++        add_library(saslSCRAMSHA1 MODULE ${scram_SRCS} ${plugin_SRCS})
++        target_link_libraries(saslSCRAMSHA1 sasl2 ${additional_link_libs})
++        install(TARGETS saslSCRAMSHA1 DESTINATION ${PLUGINDESTINATION})
 +    endif(HAVE_OPENSSL)
 +endif(NOT STATIC_PLUGIN)
 +
