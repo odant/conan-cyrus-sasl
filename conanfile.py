@@ -23,7 +23,7 @@ class CyrusSaslConan(ConanFile):
         "shared": [True, False],
         "plugins_shared": [True, False]
     }
-    default_options = "dll_sign=True", "ninja=True", "shared=True", "plugins_shared=True"
+    default_options = "dll_sign=True", "ninja=True", "shared=True", "plugins_shared=False"
     generators = "cmake"
     exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch", "Findcyrus-sasl.cmake", "CMakeLists.txt"
     no_copy_source = True
