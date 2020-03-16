@@ -12,7 +12,7 @@ def get_safe(options, name):
 
 class CyrusSaslConan(ConanFile):
     name = "cyrus-sasl"
-    version = "2.1.26+1"
+    version = "2.1.26+2"
     license = "Apache License v2.0"
     description = "Cyrus SASL C++ library"
     url = "https://github.com/cyrusimap/cyrus-sasl"
@@ -29,8 +29,9 @@ class CyrusSaslConan(ConanFile):
     no_copy_source = True
     build_policy = "missing"
     # define openssl version
-    _openssl_version = "1.1.0l+2"
-    
+    _openssl_version = "1.1.1d+0"
+    _openssl_channel = "stable"
+
     def configure(self):
         if self.settings.compiler.get_safe("libcxx") == "libstdc++":
             raise Exception("This package is only compatible with libstdc++11")
@@ -49,8 +50,8 @@ class CyrusSaslConan(ConanFile):
             self.build_requires("windows_signtool/[>=1.1]@%s/stable" % self.user)
 
     def requirements(self):
-        self.requires("openssl/%s@%s/stable" % (self._openssl_version, self.user))
-        
+        self.requires("openssl/%s@%s/%s" % (self._openssl_version, self.user, self._openssl_channel))
+
     def source(self):
         tools.patch(patch_file="cyrus-sasl-2.1.26-fixes-3.patch")
         tools.patch(patch_file="cyrus-sasl-2.1.26-openssl-1.1.0-1.patch")
@@ -73,7 +74,7 @@ class CyrusSaslConan(ConanFile):
         autotools = AutoToolsBuildEnvironment(self)
         autotools.configure()
         autotools.make()
-        
+
     def build(self):
         self.build_cmake()
 
@@ -89,7 +90,7 @@ class CyrusSaslConan(ConanFile):
                 cmd = windows_signtool.get_sign_command(fpath, digest_algorithm=alg, timestamp=is_timestamp)
                 self.output.info("Sign %s" % fpath)
                 self.run(cmd)
-        
+
     def package(self):
         self.copy("Findcyrus-sasl.cmake", dst=".", src=".", keep_path=False)
         self.copy("config.h", dst="include/sasl", src="./src", keep_path=False)
