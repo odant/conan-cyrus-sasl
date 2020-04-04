@@ -1,13 +1,5 @@
 from conans import ConanFile, CMake, AutoToolsBuildEnvironment, tools
-from conans.errors import ConanException
-import os, glob, shutil
-
-
-def get_safe(options, name):
-    try:
-        return getattr(options, name, None)
-    except ConanException:
-        return None
+import os, glob
 
 
 class CyrusSaslConan(ConanFile):
@@ -44,9 +36,9 @@ class CyrusSaslConan(ConanFile):
             del self.options.dll_sign
 
     def build_requirements(self):
-        if get_safe(self.options, "ninja"):
+        if self.options.get_safe("ninja"):
             self.build_requires("ninja_installer/1.9.0@bincrafters/stable")
-        if get_safe(self.options, "dll_sign"):
+        if self.options.get_safe("dll_sign"):
             self.build_requires("windows_signtool/[>=1.1]@%s/stable" % self.user)
 
     def requirements(self):
@@ -95,7 +87,7 @@ class CyrusSaslConan(ConanFile):
         self.copy("Findcyrus-sasl.cmake", dst=".", src=".", keep_path=False)
         self.copy("config.h", dst="include/sasl", src="./src", keep_path=False)
         # Sign DLL
-        if get_safe(self.options, "dll_sign"):
+        if self.options.get_safe("dll_sign"):
             bin_path = os.path.join(self.package_folder, "bin")
             lib_binary = os.path.join(bin_path, "*.dll")
             self.sign_binary(lib_binary)
