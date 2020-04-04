@@ -12,7 +12,7 @@ def get_safe(options, name):
 
 class CyrusSaslConan(ConanFile):
     name = "cyrus-sasl"
-    version = "2.1.26+2"
+    version = "2.1.26+3"
     license = "Apache License v2.0"
     description = "Cyrus SASL C++ library"
     url = "https://github.com/cyrusimap/cyrus-sasl"
