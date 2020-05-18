@@ -106,7 +106,7 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +#check_function_exists(getpid            HAVE_GETPID)
 +check_function_exists(gettimeofday      HAVE_GETTIMEOFDAY)
 +check_function_exists(getsubopt         HAVE_GETSUBOPT)
-+check_include_files(snprintf            HAVE_SNPRINTF)
++check_function_exists(snprintf          HAVE_SNPRINTF)
 +if(WIN32)
 +  set(HAVE_SNPRINTF 1)
 +endif(WIN32)
