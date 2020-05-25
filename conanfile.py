@@ -4,7 +4,7 @@ import os, glob
 
 class CyrusSaslConan(ConanFile):
     name = "cyrus-sasl"
-    version = "2.1.26+5"
+    version = "2.1.26+6"
     license = "Apache License v2.0"
     description = "Cyrus SASL C++ library"
     url = "https://github.com/cyrusimap/cyrus-sasl"
