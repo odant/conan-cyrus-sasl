@@ -1955,8 +1955,8 @@ diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
 +//
 +
 +VS_VERSION_INFO VERSIONINFO
-+ FILEVERSION 2,1,26,1
-+ PRODUCTVERSION 2,1,26,1
++ FILEVERSION 2,1,26,2
++ PRODUCTVERSION 2,1,26,2
 + FILEFLAGSMASK 0x3fL
 +#ifdef _DEBUG
 + FILEFLAGS 0x1L
@@ -1974,14 +1974,14 @@ diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
 +            VALUE "Comments", "Cyrus SASL is an implementation of SASL that makes it easy for application developers to integrate authentication mechanisms into their application in a generic way.\0"
 +            VALUE "CompanyName", "Cyrus SASL\0"
 +            VALUE "FileDescription", "Cyrus SASL library\0"
-+            VALUE "FileVersion", "2.1.26.1\0"
++            VALUE "FileVersion", "2.1.26.2\0"
 +            VALUE "InternalName", "sasl2\0"
 +            VALUE "LegalCopyright", "Cyrus SASL License\0"
 +            VALUE "LegalTrademarks", "See https://github.com/cyrusimap/cyrus-sasl/blob/master/COPYING\0"
 +            VALUE "OriginalFilename", "sasl2.dll\0"
 +            VALUE "PrivateBuild", "\0"
 +            VALUE "ProductName", "Cyrus SASL\0"
-+            VALUE "ProductVersion", "2.1.26.1\0"
++            VALUE "ProductVersion", "2.1.26.2\0"
 +            VALUE "SpecialBuild", "\0"
 +        END
 +    END
