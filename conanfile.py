@@ -21,7 +21,7 @@ class CyrusSaslConan(ConanFile):
     no_copy_source = True
     build_policy = "missing"
     # define openssl version
-    _openssl_version = "1.1.1h+0"
+    _openssl_version = "1.1.1L+0"
     _openssl_channel = "stable"
 
     def configure(self):
