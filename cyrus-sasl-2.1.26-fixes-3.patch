@@ -5,8 +5,8 @@ Upstream Status:         Unknown
 Origin:                  Debian and Gentoo
 Description:             Various package fixes, including autotools fixes, plugin fixes, security fixes, parallel build fixes, etc.
 
---- a/src/cmulocal/sasl2.m4	2012-11-06 20:14:29.000000000 +0100
-+++ b/src/cmulocal/sasl2.m4	2014-08-24 00:06:33.965346597 +0200
+--- a/cmulocal/sasl2.m4	2012-11-06 20:14:29.000000000 +0100
++++ b/cmulocal/sasl2.m4	2014-08-24 00:06:33.965346597 +0200
 @@ -112,9 +112,6 @@
    fi
  
@@ -25,8 +25,8 @@ Description:             Various package fixes, including autotools fixes, plugi
    AC_CHECK_FUNCS(gss_decapsulate_token)
    AC_CHECK_FUNCS(gss_encapsulate_token)
    AC_CHECK_FUNCS(gss_oid_equal)
---- a/src/config/kerberos_v4.m4	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/config/kerberos_v4.m4	2014-08-24 00:06:33.968346643 +0200
+--- a/config/kerberos_v4.m4	2012-01-28 00:31:36.000000000 +0100
++++ b/config/kerberos_v4.m4	2014-08-24 00:06:33.968346643 +0200
 @@ -89,18 +89,18 @@
      dnl if we were ambitious, we would look more aggressively for the
      dnl krb4 install
@@ -50,8 +50,8 @@ Description:             Various package fixes, including autotools fixes, plugi
         fi
         LDFLAGS="$LDFLAGS -L$krb4/lib"
      fi
---- a/src/config.h.in	2012-11-06 20:20:59.000000000 +0100
-+++ b/src/config.h.in	2014-08-24 00:06:33.969346659 +0200
+--- a/config.h.in	2012-11-06 20:20:59.000000000 +0100
++++ b/config.h.in	2014-08-24 00:06:33.969346659 +0200
 @@ -126,6 +126,10 @@
     */
  #undef HAVE_GSSKRB5_REGISTER_ACCEPTOR_IDENTITY
@@ -63,8 +63,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  /* Define if your GSSAPI implementation defines GSS_C_NT_HOSTBASED_SERVICE */
  #undef HAVE_GSS_C_NT_HOSTBASED_SERVICE
  
---- a/src/configure.in	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/configure.in	2014-08-24 00:06:46.492540015 +0200
+--- a/configure.in	2012-10-12 16:05:48.000000000 +0200
++++ b/configure.in	2014-08-24 00:06:46.492540015 +0200
 @@ -44,6 +44,8 @@
  AC_INIT(lib/saslint.h)
  AC_PREREQ([2.54])
@@ -120,8 +120,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  include/Makefile
  sasldb/Makefile
  plugins/Makefile
---- a/src/include/sasl.h	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/include/sasl.h	2014-08-24 00:06:33.970346674 +0200
+--- a/include/sasl.h	2012-10-12 16:05:48.000000000 +0200
++++ b/include/sasl.h	2014-08-24 00:06:33.970346674 +0200
 @@ -223,6 +223,8 @@
   * they must be called before all other SASL functions:
   */
@@ -131,8 +131,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  /* memory allocation functions which may optionally be replaced:
   */
  typedef void *sasl_malloc_t(size_t);
---- a/src/java/CyrusSasl/Makefile.am	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/java/CyrusSasl/Makefile.am	2014-08-24 00:06:33.970346674 +0200
+--- a/java/CyrusSasl/Makefile.am	2012-01-28 00:31:36.000000000 +0100
++++ b/java/CyrusSasl/Makefile.am	2014-08-24 00:06:33.970346674 +0200
 @@ -28,7 +28,7 @@
  javasasldir = $(prefix)/lib/java/classes/sasl/CyrusSasl
  javahtmldir = $(prefix)/html/sasl
@@ -142,8 +142,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  
  javasasl_JAVA = Sasl.java GenericClient.java \
  		ClientFactory.java \
---- a/src/lib/auxprop.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/lib/auxprop.c	2014-08-24 00:06:33.971346690 +0200
+--- a/lib/auxprop.c	2012-01-28 00:31:36.000000000 +0100
++++ b/lib/auxprop.c	2014-08-24 00:06:33.971346690 +0200
 @@ -43,6 +43,7 @@
   */
  
@@ -163,8 +163,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	_sasl_log(sparams->utils->conn, SASL_LOG_DEBUG,
  		  "could not find auxprop plugin, was searching for '%s'",
  		  plist ? plist : "[all]");
---- a/src/lib/dlopen.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/lib/dlopen.c	2014-08-24 00:06:33.971346690 +0200
+--- a/lib/dlopen.c	2012-01-28 00:31:36.000000000 +0100
++++ b/lib/dlopen.c	2014-08-24 00:06:33.971346690 +0200
 @@ -247,105 +247,6 @@
      return result;
  }
@@ -297,8 +297,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  		/* skip "lib" and cut off suffix --
  		   this only need be approximate */
  		strcpy(plugname, name + 3);
---- a/src/lib/Makefile.am	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/lib/Makefile.am	2014-08-24 00:06:33.971346690 +0200
+--- a/lib/Makefile.am	2012-10-12 16:05:48.000000000 +0200
++++ b/lib/Makefile.am	2014-08-24 00:06:33.971346690 +0200
 @@ -45,7 +45,7 @@
  # CURRENT:REVISION:AGE
  sasl_version = 3:0:0
@@ -317,8 +317,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	@for i in ./libsasl2.la ../sasldb/libsasldb.la ../plugins/lib*.la; do \
  	if test ! -f $$i; then continue; fi; . $$i; \
  	for j in $$dependency_libs foo; do \
---- a/src/Makefile.am	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/Makefile.am	2014-08-24 00:06:46.492540015 +0200
+--- a/Makefile.am	2012-10-12 16:05:48.000000000 +0200
++++ b/Makefile.am	2014-08-24 00:06:46.492540015 +0200
 @@ -43,6 +43,14 @@
  #
  ################################################################
@@ -345,8 +345,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  dist-hook:
  	@find $(distdir) -exec chmod o+w {} ';'
  	@find $(distdir) -name CVS -print | xargs -t rm -rf
---- a/src/plugins/gssapi.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/plugins/gssapi.c	2014-08-24 00:06:33.972346705 +0200
+--- a/plugins/gssapi.c	2012-01-28 00:31:36.000000000 +0100
++++ b/plugins/gssapi.c	2014-08-24 00:06:33.972346705 +0200
 @@ -50,6 +50,9 @@
  #else
  #include <gssapi/gssapi.h>
@@ -397,8 +397,8 @@ Description:             Various package fixes, including autotools fixes, plugi
      }
  #endif
      
---- a/src/plugins/ldapdb.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/plugins/ldapdb.c	2014-08-24 00:06:33.972346705 +0200
+--- a/plugins/ldapdb.c	2012-01-28 00:31:36.000000000 +0100
++++ b/plugins/ldapdb.c	2014-08-24 00:06:33.972346705 +0200
 @@ -251,6 +251,8 @@
  
  #if defined(LDAP_PROXY_AUTHZ_FAILURE)
@@ -416,8 +416,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	*out_ulen = len;
  	ber_bvecfree(bvals);
      }
---- a/src/plugins/Makefile.am	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/plugins/Makefile.am	2014-08-24 00:06:33.973346721 +0200
+--- a/plugins/Makefile.am	2012-10-12 16:05:48.000000000 +0200
++++ b/plugins/Makefile.am	2014-08-24 00:06:33.973346721 +0200
 @@ -49,7 +49,7 @@
  # CURRENT:REVISION:AGE
  plugin_version = 3:0:0
@@ -427,8 +427,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  AM_LDFLAGS = -module -export-dynamic -rpath $(plugindir) -version-info $(plugin_version)
  
  COMPAT_OBJS = @LTGETADDRINFOOBJS@ @LTGETNAMEINFOOBJS@ @LTSNPRINTFOBJS@
---- a/src/pwcheck/Makefile.am	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/pwcheck/Makefile.am	2014-08-24 00:06:33.973346721 +0200
+--- a/pwcheck/Makefile.am	2012-01-28 00:31:36.000000000 +0100
++++ b/pwcheck/Makefile.am	2014-08-24 00:06:33.973346721 +0200
 @@ -24,7 +24,7 @@
  
  sbin_PROGRAMS = pwcheck
@@ -438,8 +438,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  
  pwcheck_SOURCES = pwcheck.c
  EXTRA_pwcheck_SOURCES = pwcheck_getpwnam.c pwcheck_getspnam.c
---- a/src/pwcheck/pwcheck_getpwnam.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/pwcheck/pwcheck_getpwnam.c	2014-08-24 00:06:33.973346721 +0200
+--- a/pwcheck/pwcheck_getpwnam.c	2012-01-28 00:31:36.000000000 +0100
++++ b/pwcheck/pwcheck_getpwnam.c	2014-08-24 00:06:33.973346721 +0200
 @@ -32,6 +32,7 @@
  char *password;
  {
@@ -457,8 +457,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	r = "Incorrect password";
      }
      else {
---- a/src/pwcheck/pwcheck_getspnam.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/pwcheck/pwcheck_getspnam.c	2014-08-24 00:06:33.973346721 +0200
+--- a/pwcheck/pwcheck_getspnam.c	2012-01-28 00:31:36.000000000 +0100
++++ b/pwcheck/pwcheck_getspnam.c	2014-08-24 00:06:33.973346721 +0200
 @@ -24,6 +24,7 @@
  ******************************************************************/
  
@@ -484,8 +484,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	return "Incorrect password";
      }
      else {
---- a/src/sample/Makefile.am	2012-10-16 15:07:55.000000000 +0200
-+++ b/src/sample/Makefile.am	2014-08-24 00:06:33.973346721 +0200
+--- a/sample/Makefile.am	2012-10-16 15:07:55.000000000 +0200
++++ b/sample/Makefile.am	2014-08-24 00:06:33.973346721 +0200
 @@ -42,7 +42,7 @@
  #
  ################################################################
@@ -495,8 +495,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  
  noinst_PROGRAMS = client server
  EXTRA_PROGRAMS = sample-client sample-server
---- a/src/saslauthd/auth_getpwent.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/saslauthd/auth_getpwent.c	2014-08-24 00:06:33.974346736 +0200
+--- a/saslauthd/auth_getpwent.c	2012-10-12 16:05:48.000000000 +0200
++++ b/saslauthd/auth_getpwent.c	2014-08-24 00:06:33.974346736 +0200
 @@ -77,6 +77,7 @@
  {
      /* VARIABLES */
@@ -515,8 +515,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	if (flags & VERBOSE) {
  	    syslog(LOG_DEBUG, "DEBUG: auth_getpwent: %s: invalid password", login);
  	}
---- a/src/saslauthd/auth_rimap.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/saslauthd/auth_rimap.c	2014-08-24 00:06:33.974346736 +0200
+--- a/saslauthd/auth_rimap.c	2012-10-12 16:05:48.000000000 +0200
++++ b/saslauthd/auth_rimap.c	2014-08-24 00:06:33.974346736 +0200
 @@ -90,6 +90,7 @@
  					   service we connect to.	 */
  #define TAG "saslauthd"			/* IMAP command tag */
@@ -563,8 +563,8 @@ Description:             Various package fixes, including autotools fixes, plugi
      (void) close(s);			/* we're done with the remote */
      if (rc == -1) {
  	syslog(LOG_WARNING, "auth_rimap: read (response): %m");
---- a/src/saslauthd/auth_shadow.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/saslauthd/auth_shadow.c	2014-08-24 00:06:33.974346736 +0200
+--- a/saslauthd/auth_shadow.c	2012-10-12 16:05:48.000000000 +0200
++++ b/saslauthd/auth_shadow.c	2014-08-24 00:06:33.974346736 +0200
 @@ -210,8 +210,8 @@
  	RETURN("NO Insufficient permission to access NIS authentication database (saslauthd)");
      }
@@ -596,8 +596,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  	if (flags & VERBOSE) {
  	    syslog(LOG_DEBUG, "auth_shadow: pw mismatch: %s != %s",
  		   password, upw->upw_passwd);
---- a/src/saslauthd/configure.in	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/saslauthd/configure.in	2014-08-24 00:06:33.975346752 +0200
+--- a/saslauthd/configure.in	2012-10-12 16:05:48.000000000 +0200
++++ b/saslauthd/configure.in	2014-08-24 00:06:33.975346752 +0200
 @@ -1,7 +1,8 @@
  AC_INIT(mechanisms.h)
  AC_PREREQ([2.54])
@@ -671,8 +671,8 @@ Description:             Various package fixes, including autotools fixes, plugi
                         AC_DEFINE(HAVE_FUNCTION,[],[Does compiler understand __FUNCTION__])
                 fi
         fi
---- a/src/saslauthd/Makefile.am	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/saslauthd/Makefile.am	2014-08-24 00:06:33.975346752 +0200
+--- a/saslauthd/Makefile.am	2012-01-28 00:31:36.000000000 +0100
++++ b/saslauthd/Makefile.am	2014-08-24 00:06:33.975346752 +0200
 @@ -1,4 +1,6 @@
  AUTOMAKE_OPTIONS = 1.7
 +ACLOCAL_AMFLAGS = -I ../cmulocal -I ../config
@@ -698,8 +698,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  DEFS            = @DEFS@ -DSASLAUTHD_CONF_FILE_DEFAULT=\"@sysconfdir@/saslauthd.conf\" -I. -I$(srcdir) -I..
  
  
---- a/src/saslauthd/saslauthd.h.in	2012-11-06 20:21:43.000000000 +0100
-+++ b/src/saslauthd/saslauthd.h.in	2014-08-24 00:06:33.975346752 +0200
+--- a/saslauthd/saslauthd.h.in	2012-11-06 20:21:43.000000000 +0100
++++ b/saslauthd/saslauthd.h.in	2014-08-24 00:06:33.975346752 +0200
 @@ -62,6 +62,10 @@
     */
  #undef HAVE_GSSKRB5_REGISTER_ACCEPTOR_IDENTITY
@@ -711,8 +711,8 @@ Description:             Various package fixes, including autotools fixes, plugi
  /* Define if your GSSAPI implementation defines GSS_C_NT_HOSTBASED_SERVICE */
  #undef HAVE_GSS_C_NT_HOSTBASED_SERVICE
  
---- a/src/sasldb/Makefile.am	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/sasldb/Makefile.am	2014-08-24 00:06:33.975346752 +0200
+--- a/sasldb/Makefile.am	2012-01-28 00:31:36.000000000 +0100
++++ b/sasldb/Makefile.am	2014-08-24 00:06:33.975346752 +0200
 @@ -44,7 +44,7 @@
  # Note that this doesn't necessaraly follow the libsasl2 verison info
  sasl_version = 1:25:0
@@ -740,8 +740,8 @@ Description:             Various package fixes, including autotools fixes, plugi
 +	$(AR) cru $@ $(SASL_DB_BACKEND_STATIC)
  
  
---- a/src/utils/Makefile.am	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/utils/Makefile.am	2014-08-24 00:06:33.976346767 +0200
+--- a/utils/Makefile.am	2012-01-28 00:31:36.000000000 +0100
++++ b/utils/Makefile.am	2014-08-24 00:06:33.976346767 +0200
 @@ -89,7 +89,7 @@
  libsfsasl2_la_LIBADD = sfsasl.lo
  libsfsasl2_la_LDFLAGS = -version-info 1:0:0 -export-dynamic -rpath $(libdir)

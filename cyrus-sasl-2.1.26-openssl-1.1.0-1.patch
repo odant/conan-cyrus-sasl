@@ -11,8 +11,8 @@ Description:             Allow to build with OpenSSL-1.1.0.
 
 
 diff -Naurp cyrus-sasl-2.1.26-orig/plugins/ntlm.c cyrus-sasl-2.1.26/plugins/ntlm.c
---- a/src/plugins/ntlm.c	2012-01-27 17:31:36.000000000 -0600
-+++ b/src/plugins/ntlm.c	2017-05-26 23:42:19.293372476 -0500
+--- a/plugins/ntlm.c	2012-01-27 17:31:36.000000000 -0600
++++ b/plugins/ntlm.c	2017-05-26 23:42:19.293372476 -0500
 @@ -417,6 +417,29 @@ static unsigned char *P24(unsigned char
      return P24;
  }
@@ -88,8 +88,8 @@ diff -Naurp cyrus-sasl-2.1.26-orig/plugins/ntlm.c cyrus-sasl-2.1.26/plugins/ntlm
  }
  
 diff -Naurp cyrus-sasl-2.1.26-orig/plugins/otp.c cyrus-sasl-2.1.26/plugins/otp.c
---- a/src/plugins/otp.c	2012-10-12 09:05:48.000000000 -0500
-+++ b/src/plugins/otp.c	2017-05-26 23:42:19.293372476 -0500
+--- a/plugins/otp.c	2012-10-12 09:05:48.000000000 -0500
++++ b/plugins/otp.c	2017-05-26 23:42:19.293372476 -0500
 @@ -96,6 +96,28 @@ static algorithm_option_t algorithm_opti
      {NULL,	0,	NULL}
  };
@@ -334,8 +334,8 @@ diff -Naurp cyrus-sasl-2.1.26-orig/plugins/otp.c cyrus-sasl-2.1.26/plugins/otp.c
  }
  
 diff -Naurp cyrus-sasl-2.1.26-orig/saslauthd/lak.c cyrus-sasl-2.1.26/saslauthd/lak.c
---- a/src/saslauthd/lak.c	2012-10-12 09:05:48.000000000 -0500
-+++ b/src/saslauthd/lak.c	2017-05-26 23:42:19.293372476 -0500
+--- a/saslauthd/lak.c	2012-10-12 09:05:48.000000000 -0500
++++ b/saslauthd/lak.c	2017-05-26 23:42:19.293372476 -0500
 @@ -61,6 +61,35 @@
  #include <sasl.h>
  #include "lak.h"

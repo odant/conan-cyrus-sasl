@@ -1,6 +1,6 @@
 diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake cyrus-sasl-2.1.26/cmake/modules/FindWcecompat.cmake
 --- a/dev/null
-+++ b/src/cmake/modules/FindWcecompat.cmake	2013-02-16 12:26:49.054683900 +0100
++++ b/cmake/modules/FindWcecompat.cmake	2013-02-16 12:26:49.054683900 +0100
 @@ -0,0 +1,33 @@
 +# Try to find Wcecompat functionality
 +# Once done this will define
@@ -37,10 +37,10 @@ diff -Nru -x '*~' cyrus-sasl-2.1.26.orig/cmake/modules/FindWcecompat.cmake cyrus
 +mark_as_advanced(WCECOMPAT_INCLUDE_DIR  WCECOMPAT_LIBRARIES  WCECOMPAT_CONST  WCECOMPAT_LIB_FOUND)
 diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 --- a/dev/null
-+++ b/src/CMakeLists.txt	2013-02-16 12:26:49.060681600 +0100
-@@ -0,0 +1,349 @@
++++ b/CMakeLists.txt	2013-02-16 12:26:49.060681600 +0100
+@@ -0,0 +1,351 @@
++cmake_minimum_required(VERSION 3.15)
 +project(cyrus-sasl)
-+cmake_minimum_required(VERSION 2.6.2)
 +set(PACKAGE "cyrus-sasl")
 +set(VERSION "2.1.26")
 +set(PLUGINDESTINATION bin/sasl2)
@@ -49,6 +49,8 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +
 +option(STATIC_PLUGIN "build the sasl plugins statically" ON)
 +option(STATIC_LIBRARY "build the sasl library statically" ON)
++
++find_package(OpenSSL REQUIRED)
 +
 +set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
 +
@@ -390,7 +392,7 @@ diff -Nru -x '*~' a/src/CMakeLists.txt b/src/CMakeLists.txt
 +install(TARGETS sasl2_pluginviewer DESTINATION bin)
 diff -Nru -x '*~' a/src/config.h.cmake b/src/config.h.cmake
 --- a/dev/null
-+++ b/src/config.h.cmake	2013-02-16 12:26:49.064681700 +0100
++++ b/config.h.cmake	2013-02-16 12:26:49.064681700 +0100
 @@ -0,0 +1,226 @@
 +#ifndef CONFIG_H
 +#define CONFIG_H
@@ -619,8 +621,8 @@ diff -Nru -x '*~' a/src/config.h.cmake b/src/config.h.cmake
 +#endif
 +#endif
 diff -Nru -x '*~' a/src/include/gai.h b/src/include/gai.h
---- a/src/include/gai.h	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/include/gai.h	2013-02-16 12:26:49.068682300 +0100
+--- a/include/gai.h	2012-01-28 00:31:36.000000000 +0100
++++ b/include/gai.h	2013-02-16 12:26:49.068682300 +0100
 @@ -54,6 +54,8 @@
  #ifndef _GAI_H_
  #define _GAI_H_
@@ -666,8 +668,8 @@ diff -Nru -x '*~' a/src/include/gai.h b/src/include/gai.h
  
  #ifdef __cplusplus
 diff -Nru -x '*~' a/src/include/prop.h b/src/include/prop.h
---- a/src/include/prop.h	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/include/prop.h	2013-02-16 12:26:49.072682800 +0100
+--- a/include/prop.h	2012-10-12 16:05:48.000000000 +0200
++++ b/include/prop.h	2013-02-16 12:26:49.072682800 +0100
 @@ -33,17 +33,21 @@
  /* Under Unix, life is simpler: we just need to mark library functions
   * as extern.  (Technically, we don't even have to do that.) */
@@ -698,7 +700,7 @@ diff -Nru -x '*~' a/src/include/prop.h b/src/include/prop.h
  # else /* LIBSASL_EXPORTS */
 diff -Nru -x '*~' a/src/include/prop.h.cmake b/src/include/prop.h.cmake
 --- a/dev/null
-+++ b/src/include/prop.h.cmake	2013-02-16 12:26:49.077683700 +0100
++++ b/include/prop.h.cmake	2013-02-16 12:26:49.077683700 +0100
 @@ -0,0 +1,193 @@
 +/* prop.h -- property request/response management routines
 + *
@@ -894,8 +896,8 @@ diff -Nru -x '*~' a/src/include/prop.h.cmake b/src/include/prop.h.cmake
 +
 +#endif /* PROP_H */
 diff -Nru -x '*~' a/src/include/sasl.h b/src/include/sasl.h
---- a/src/include/sasl.h	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/include/sasl.h	2013-02-18 11:00:29.208627000 +0100
+--- a/include/sasl.h	2012-10-12 16:05:48.000000000 +0200
++++ b/include/sasl.h	2013-02-18 11:00:29.208627000 +0100
 @@ -130,6 +130,7 @@
  #define SASL_VERSION_FULL ((SASL_VERSION_MAJOR << 16) |\
        (SASL_VERSION_MINOR << 8) | SASL_VERSION_STEP)
@@ -905,8 +907,8 @@ diff -Nru -x '*~' a/src/include/sasl.h b/src/include/sasl.h
  
  /*************
 diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
---- a/src/lib/auxprop.c
-+++ b/src/lib/auxprop.c
+--- a/lib/auxprop.c
++++ b/lib/auxprop.c
 @@ -906,7 +906,7 @@ int _sasl_auxprop_lookup(sasl_server_params_t *sparams,
  			  unsigned flags,
  			  const char *user, unsigned ulen) 
@@ -949,8 +951,8 @@ diff -Nru -x '*~' a/src/lib/auxprop.c b/src/lib/auxprop.c
      }
  
 diff -Nru -x '*~' a/src/lib/canonusr.c b/src/lib/canonusr.c
---- a/src/lib/canonusr.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/lib/canonusr.c	2013-02-16 12:26:49.089685400 +0100
+--- a/lib/canonusr.c	2012-10-12 16:05:48.000000000 +0200
++++ b/lib/canonusr.c	2013-02-16 12:26:49.089685400 +0100
 @@ -74,7 +74,7 @@
      sasl_server_conn_t *sconn = NULL;
      sasl_client_conn_t *cconn = NULL;
@@ -975,8 +977,8 @@ diff -Nru -x '*~' a/src/lib/canonusr.c b/src/lib/canonusr.c
  
      if (!plugin_name) {
 diff -Nru -x '*~' a/src/lib/checkpw.c b/src/lib/checkpw.c
---- a/src/lib/checkpw.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/lib/checkpw.c	2013-02-16 12:26:49.094689200 +0100
+--- a/lib/checkpw.c	2012-01-28 00:31:36.000000000 +0100
++++ b/lib/checkpw.c	2013-02-16 12:26:49.094689200 +0100
 @@ -649,7 +649,7 @@
      char *query_end = query;
      int s;
@@ -1017,8 +1019,8 @@ diff -Nru -x '*~' a/src/lib/checkpw.c b/src/lib/checkpw.c
      if (!p) {
  	/*
 diff -Nru -x '*~' a/src/lib/common.c b/src/lib/common.c
---- a/src/lib/common.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/lib/common.c	2013-02-16 12:26:49.101686700 +0100
+--- a/lib/common.c	2012-10-12 16:05:48.000000000 +0200
++++ b/lib/common.c	2013-02-16 12:26:49.101686700 +0100
 @@ -902,7 +902,7 @@
  int sasl_getprop(sasl_conn_t *conn, int propnum, const void **pvalue)
  {
@@ -1076,8 +1078,8 @@ diff -Nru -x '*~' a/src/lib/common.c b/src/lib/common.c
          tmp = ValueData;
  
 diff -Nru -x '*~' a/src/lib/dlopen.c b/src/lib/dlopen.c
---- a/src/lib/dlopen.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/lib/dlopen.c	2013-02-16 12:26:49.106688000 +0100
+--- a/lib/dlopen.c	2012-01-28 00:31:36.000000000 +0100
++++ b/lib/dlopen.c	2013-02-16 12:26:49.106688000 +0100
 @@ -56,7 +56,7 @@
  #include <sasl.h>
  #include "saslint.h"
@@ -1115,8 +1117,8 @@ diff -Nru -x '*~' a/src/lib/dlopen.c b/src/lib/dlopen.c
  /* only do the following if:
   * 
 diff -Nru -x '*~' a/src/lib/saslutil.c b/src/lib/saslutil.c
---- a/src/lib/saslutil.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/lib/saslutil.c	2013-02-16 12:26:49.112688100 +0100
+--- a/lib/saslutil.c	2012-10-12 16:05:48.000000000 +0200
++++ b/lib/saslutil.c	2013-02-16 12:26:49.112688100 +0100
 @@ -607,7 +607,7 @@
      return (0);
  }
@@ -1286,8 +1288,8 @@ diff -Nru -x '*~' a/src/lib/saslutil.c b/src/lib/saslutil.c
  }
  
 diff -Nru -x '*~' a/src/lib/server.c b/src/lib/server.c
---- a/src/lib/server.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/lib/server.c	2013-02-16 12:26:49.120689300 +0100
+--- a/lib/server.c	2012-10-12 16:05:48.000000000 +0200
++++ b/lib/server.c	2013-02-16 12:26:49.120689300 +0100
 @@ -820,7 +820,7 @@
      const sasl_callback_t *vf;
      const char *pluginfile = NULL;
@@ -1399,8 +1401,8 @@ diff -Nru -x '*~' a/src/lib/server.c b/src/lib/server.c
  
      if(!mlist) mlist = DEFAULT_CHECKPASS_MECH;
 diff -Nru -x '*~' a/src/lib/windlopen.c b/src/lib/windlopen.c
---- a/src/lib/windlopen.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/lib/windlopen.c	2013-02-16 12:26:49.125689600 +0100
+--- a/lib/windlopen.c	2012-01-28 00:31:36.000000000 +0100
++++ b/lib/windlopen.c	2013-02-16 12:26:49.125689600 +0100
 @@ -50,6 +50,11 @@
  #include <sasl.h>
  #include "saslint.h"
@@ -1525,8 +1527,8 @@ diff -Nru -x '*~' a/src/lib/windlopen.c b/src/lib/windlopen.c
      return SASL_OK;
  }
 diff -Nru -x '*~' a/src/plugins/anonymous_init.c b/src/plugins/anonymous_init.c
---- a/src/plugins/anonymous_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ b/src/plugins/anonymous_init.c	2013-02-16 12:26:49.129690200 +0100
+--- a/plugins/anonymous_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/plugins/anonymous_init.c	2013-02-16 12:26:49.129690200 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_anonymous_plugin_decl.h>
  #endif
@@ -1547,8 +1549,8 @@ diff -Nru -x '*~' a/src/plugins/anonymous_init.c b/src/plugins/anonymous_init.c
 -
 +#endif
 diff -Nru -x '*~' a/src/plugins/crammd5_init.c b/src/plugins/crammd5_init.c
---- a/src/plugins/crammd5_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ b/src/plugins/crammd5_init.c	2013-02-16 12:26:49.133690800 +0100
+--- a/plugins/crammd5_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/plugins/crammd5_init.c	2013-02-16 12:26:49.133690800 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_crammd5_plugin_decl.h>
  #endif
@@ -1569,8 +1571,8 @@ diff -Nru -x '*~' a/src/plugins/crammd5_init.c b/src/plugins/crammd5_init.c
 -
 +#endif
 diff -Nru -x '*~' a/src/plugins/digestmd5_init.c b/src/plugins/digestmd5_init.c
---- a/src/plugins/digestmd5_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ b/src/plugins/digestmd5_init.c	2013-02-16 12:26:49.138693100 +0100
+--- a/plugins/digestmd5_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/plugins/digestmd5_init.c	2013-02-16 12:26:49.138693100 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_digestmd5_plugin_decl.h>
  #endif
@@ -1591,8 +1593,8 @@ diff -Nru -x '*~' a/src/plugins/digestmd5_init.c b/src/plugins/digestmd5_init.c
 -
 +#endif
 diff -Nru -x '*~' a/src/plugins/login_init.c b/src/plugins/login_init.c
---- a/src/plugins/login_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ b/src/plugins/login_init.c	2013-02-16 12:26:49.143694000 +0100
+--- a/plugins/login_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/plugins/login_init.c	2013-02-16 12:26:49.143694000 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_login_plugin_decl.h>
  #endif
@@ -1613,8 +1615,8 @@ diff -Nru -x '*~' a/src/plugins/login_init.c b/src/plugins/login_init.c
 -
 +#endif
 diff -Nru -x '*~' a/src/plugins/plain_init.c b/src/plugins/plain_init.c
---- a/src/plugins/plain_init.c	2012-11-06 20:32:19.000000000 +0100
-+++ b/src/plugins/plain_init.c	2013-02-16 12:26:49.146693300 +0100
+--- a/plugins/plain_init.c	2012-11-06 20:32:19.000000000 +0100
++++ b/plugins/plain_init.c	2013-02-16 12:26:49.146693300 +0100
 @@ -20,7 +20,7 @@
  #include <sasl_plain_plugin_decl.h>
  #endif
@@ -1635,8 +1637,8 @@ diff -Nru -x '*~' a/src/plugins/plain_init.c b/src/plugins/plain_init.c
 -
 +#endif
 diff -Nru -x '*~' a/src/plugins/plugin_common.c b/src/plugins/plugin_common.c
---- a/src/plugins/plugin_common.c	2012-10-12 16:05:48.000000000 +0200
-+++ b/src/plugins/plugin_common.c	2013-02-16 12:26:49.151692700 +0100
+--- a/plugins/plugin_common.c	2012-10-12 16:05:48.000000000 +0200
++++ b/plugins/plugin_common.c	2013-02-16 12:26:49.151692700 +0100
 @@ -819,7 +819,7 @@
  
  void _plug_snprintf_os_info (char * osbuf, int osbuf_len)
@@ -1693,8 +1695,8 @@ diff -Nru -x '*~' a/src/plugins/plugin_common.c b/src/plugins/plugin_common.c
      struct utsname os;
  
 diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
---- a/src/utils/pluginviewer.c	2012-01-28 00:31:36.000000000 +0100
-+++ b/src/utils/pluginviewer.c	2013-02-16 12:26:49.157694300 +0100
+--- a/utils/pluginviewer.c	2012-01-28 00:31:36.000000000 +0100
++++ b/utils/pluginviewer.c	2013-02-16 12:26:49.157694300 +0100
 @@ -49,9 +49,16 @@
  #include <stdlib.h>
  #ifdef WIN32
@@ -1883,8 +1885,8 @@ diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
      /* NOTE: this will return "sasl_mech" option, however this HAS NO EFFECT
         on client side SASL plugins, which just never query this option */
      callback->id = SASL_CB_GETOPT;
---- a/src/lib/getaddrinfo.c
-+++ b/src/lib/getaddrinfo.c
+--- a/lib/getaddrinfo.c
++++ b/lib/getaddrinfo.c
 @@ -59,6 +59,9 @@
   */
  
@@ -1901,8 +1903,8 @@ diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
  }
 +
 +#endif // HAVE_GETADDRINFO
---- a/src/lib/getnameinfo.c
-+++ b/src/lib/getnameinfo.c
+--- a/lib/getnameinfo.c
++++ b/lib/getnameinfo.c
 @@ -59,6 +59,9 @@
   */
  
@@ -1919,8 +1921,8 @@ diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
  }
 +
 +#endif // HAVE_GETNAMEINFO
---- a/src/plugins/ntlm.c
-+++ b/src/plugins/ntlm.c
+--- a/plugins/ntlm.c
++++ b/plugins/ntlm.c
 @@ -103,6 +103,22 @@
  static const char plugin_id[] = "$Id: ntlm.c,v 1.37 2011/11/08 17:31:55 murch Exp $";
  
@@ -1945,7 +1947,7 @@ diff -Nru -x '*~' a/src/utils/pluginviewer.c b/src/utils/pluginviewer.c
  
  ssize_t writev (SOCKET fd, const struct iovec *iov, size_t iovcnt)
 --- /dev/null
-+++ b/src/sasl2.rc
++++ b/sasl2.rc
 @@ -0,0 +1,44 @@
 +#include <windows.h>
 +

@@ -1,4 +1,4 @@
-from conans import ConanFile, CMake, AutoToolsBuildEnvironment, tools
+from conan import ConanFile, tools
 import os, glob
 
 
@@ -15,84 +15,84 @@ class CyrusSaslConan(ConanFile):
         "shared": [True, False],
         "plugins_shared": [True, False]
     }
-    default_options = "dll_sign=True", "ninja=True", "shared=True", "plugins_shared=False"
-    generators = "cmake"
-    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch", "FindCyrusSASL.cmake", "CMakeLists.txt"
+    default_options = { 
+        "dll_sign": True, 
+        "ninja":    True, 
+        "shared":   True, 
+        "plugins_shared": False
+    }
+    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch"
     no_copy_source = True
     build_policy = "missing"
-    # define openssl version
-    _openssl_version = "1.1.1L+0"
-    _openssl_channel = "stable"
+    package_type = "library"
+    python_requires = "windows_signtool/[>=1.2]@odant/stable"
+    
+    def layout(self):
+        tools.cmake.cmake_layout(self, src_folder="src")
 
     def configure(self):
         if self.settings.compiler.get_safe("libcxx") == "libstdc++":
             raise Exception("This package is only compatible with libstdc++11")
         # MT(d) static library
-        if self.settings.os == "Windows" and self.settings.compiler == "Visual Studio":
-            if self.settings.compiler.runtime == "MT" or self.settings.compiler.runtime == "MTd":
+        if self.settings.os == "Windows" and self.settings.compiler == "msvc":
+            if self.settings.compiler.runtime == "static":
                 self.options.shared=False
         # DLL sign, only Windows and shared
         if self.settings.os != "Windows" or self.options.shared == False:
-            del self.options.dll_sign
+            self.options.rm_safe("dll_sign")
 
     def build_requirements(self):
         if self.options.get_safe("ninja"):
-            self.build_requires("ninja/[>=1.10.2]")
-        if self.options.get_safe("dll_sign"):
-            self.build_requires("windows_signtool/[>=1.1]@%s/stable" % self.user)
+            self.build_requires("ninja/[>=1.12.1]")
 
     def requirements(self):
-        self.requires("openssl/%s@%s/%s" % (self._openssl_version, self.user, self._openssl_channel))
+        self.requires("openssl/[>=3.0.16]@%s/stable" % self.user)
 
     def source(self):
-        tools.patch(patch_file="cyrus-sasl-2.1.26-fixes-3.patch")
-        tools.patch(patch_file="cyrus-sasl-2.1.26-openssl-1.1.0-1.patch")
-        tools.patch(patch_file="cyrus-sasl-2.1.26.patch")
-
-    def build_cmake(self):
-        build_type = "RelWithDebInfo" if self.settings.build_type == "Release" else "Debug"
-        generator = "Ninja" if self.options.ninja == True else None
-        cmake = CMake(self, build_type=build_type, generator=generator)
-        cmake.verbose = False
+        tools.files.patch(self, patch_file="cyrus-sasl-2.1.26-fixes-3.patch")
+        tools.files.patch(self, patch_file="cyrus-sasl-2.1.26-openssl-1.1.0-1.patch")
+        tools.files.patch(self, patch_file="cyrus-sasl-2.1.26.patch")
+        
+    def generate(self):
+        benv = tools.env.VirtualBuildEnv(self)
+        benv.generate()
+        renv = tools.env.VirtualRunEnv(self)
+        renv.generate()
+        if tools.microsoft.is_msvc(self):
+            vc = tools.microsoft.VCVars(self)
+            vc.generate()
+        deps = tools.cmake.CMakeDeps(self)    
+        deps.generate()
+        cmakeGenerator = "Ninja" if self.options.ninja else None
+        tc = tools.cmake.CMakeToolchain(self, generator=cmakeGenerator)
+        tc.preprocessor_definitions["PROTOTYPES"] = "1"
         if self.options.shared:
-            cmake.definitions["STATIC_LIBRARY:BOOL"] = "OFF"
+            tc.variables["STATIC_LIBRARY"] = "OFF"
         if self.options.plugins_shared:
-            cmake.definitions["STATIC_PLUGIN:BOOL"] = "OFF"
-        cmake.configure()
-        cmake.build()
-        cmake.install()
-
-    def build_autotools(self):
-        autotools = AutoToolsBuildEnvironment(self)
-        autotools.configure()
-        autotools.make()
+            tc.variables["STATIC_PLUGIN"] = "OFF"
+        if self.settings.compiler == "gcc":
+            tc.extra_cflags.append("-Wno-error=implicit-function-declaration")
+            tc.extra_cflags.append("-Wno-error=incompatible-pointer-types")
+        tc.generate()
 
     def build(self):
-        self.build_cmake()
+        cmake = tools.cmake.CMake(self)
+        cmake.configure()
+        cmake.build()
 
     def package_id(self):
         self.info.options.ninja = "any"
 
-    def sign_binary(self, path):
-        import windows_signtool
-        for fpath in glob.glob(path):
-            fpath = fpath.replace("\\", "/")
-            for alg in ["sha1", "sha256"]:
-                is_timestamp = True if self.settings.build_type == "Release" else False
-                cmd = windows_signtool.get_sign_command(fpath, digest_algorithm=alg, timestamp=is_timestamp)
-                self.output.info("Sign %s" % fpath)
-                self.run(cmd)
-
     def package(self):
-        self.copy("FindCyrusSASL.cmake", dst=".", src=".", keep_path=False)
-        self.copy("config.h", dst="include/sasl", src="./src", keep_path=False)
+        cmake = tools.cmake.CMake(self)
+        cmake.install()
+        tools.files.copy(self, "config.h", dst=os.path.join(self.package_folder, "include", "sasl"), src=self.build_folder, keep_path=False)
         # Sign DLL
         if self.options.get_safe("dll_sign"):
-            bin_path = os.path.join(self.package_folder, "bin")
-            lib_binary = os.path.join(bin_path, "*.dll")
-            self.sign_binary(lib_binary)
-            plugin_binaries = os.path.join(bin_path, "sasl2", "*.dll")
-            self.sign_binary(plugin_binaries)
+            self.python_requires["windows_signtool"].module.sign(self, [os.path.join(self.package_folder, "bin", "*.dll")])
 
     def package_info(self):
-        self.cpp_info.libs = tools.collect_libs(self)
+        self.cpp_info.set_property("cmake_find_mode", "both")
+        self.cpp_info.set_property("cmake_file_name", "CyrusSASL")
+        self.cpp_info.set_property("cmake_target_name", "CyrusSASL::CyrusSASL")
+        self.cpp_info.libs = tools.files.collect_libs(self)
