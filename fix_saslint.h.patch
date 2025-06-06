@@ -1,0 +1,13 @@
+diff --git a/src/lib/saslint.h b/src/lib/saslint.h
+index e2edb3d..284709d 100644
+--- a/lib/saslint.h
++++ b/lib/saslint.h
+@@ -298,7 +298,7 @@ struct sasl_verify_password_s {
+ /*
+  * common.c
+  */
+-LIBSASL_API const sasl_utils_t *sasl_global_utils;
++extern const sasl_utils_t *sasl_global_utils;
+ 
+ extern int (*_sasl_client_idle_hook)(sasl_conn_t *conn);
+ extern int (*_sasl_server_idle_hook)(sasl_conn_t *conn);

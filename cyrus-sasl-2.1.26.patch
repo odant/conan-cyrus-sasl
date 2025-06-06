@@ -628,7 +628,7 @@ diff -Nru -x '*~' a/src/include/gai.h b/src/include/gai.h
  #define _GAI_H_
  
 +#include "prop.h"
-+
++struct addrinfo; struct sockaddr;
  #ifndef NI_MAXHOST
  #define	NI_MAXHOST	1025
  #endif

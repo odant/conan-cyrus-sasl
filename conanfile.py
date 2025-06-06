@@ -21,7 +21,7 @@ class CyrusSaslConan(ConanFile):
         "shared":   True, 
         "plugins_shared": False
     }
-    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch"
+    exports_sources = "src/*", "cyrus-sasl-2.1.26.patch", "cyrus-sasl-2.1.26-fixes-3.patch", "cyrus-sasl-2.1.26-openssl-1.1.0-1.patch", "fix_saslint.h.patch"
     no_copy_source = True
     build_policy = "missing"
     package_type = "library"
@@ -34,7 +34,7 @@ class CyrusSaslConan(ConanFile):
         if self.settings.compiler.get_safe("libcxx") == "libstdc++":
             raise Exception("This package is only compatible with libstdc++11")
         # MT(d) static library
-        if self.settings.os == "Windows" and self.settings.compiler == "msvc":
+        if self.settings.os == "Windows" and (self.settings.compiler == "msvc" or ( self.settings.compiler == "clang" and self.settings.compiler.get_safe("runtime_version"))):
             if self.settings.compiler.runtime == "static":
                 self.options.shared=False
         # DLL sign, only Windows and shared
@@ -52,13 +52,14 @@ class CyrusSaslConan(ConanFile):
         tools.files.patch(self, patch_file="cyrus-sasl-2.1.26-fixes-3.patch")
         tools.files.patch(self, patch_file="cyrus-sasl-2.1.26-openssl-1.1.0-1.patch")
         tools.files.patch(self, patch_file="cyrus-sasl-2.1.26.patch")
+        tools.files.patch(self, patch_file="fix_saslint.h.patch")
         
     def generate(self):
         benv = tools.env.VirtualBuildEnv(self)
         benv.generate()
         renv = tools.env.VirtualRunEnv(self)
         renv.generate()
-        if tools.microsoft.is_msvc(self):
+        if self.settings.os == "Windows" and (self.settings.compiler == "msvc" or ( self.settings.compiler == "clang" and self.settings.compiler.get_safe("runtime_version"))):
             vc = tools.microsoft.VCVars(self)
             vc.generate()
         deps = tools.cmake.CMakeDeps(self)    
@@ -70,7 +71,7 @@ class CyrusSaslConan(ConanFile):
             tc.variables["STATIC_LIBRARY"] = "OFF"
         if self.options.plugins_shared:
             tc.variables["STATIC_PLUGIN"] = "OFF"
-        if self.settings.compiler == "gcc":
+        if self.settings.compiler == "gcc" or self.settings.compiler == "clang":
             tc.extra_cflags.append("-Wno-error=implicit-function-declaration")
             tc.extra_cflags.append("-Wno-error=incompatible-pointer-types")
         tc.generate()
